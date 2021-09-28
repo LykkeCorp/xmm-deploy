@@ -46,7 +46,7 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
     echo sleep for 2 seconds
     sleep 2
     echo print last logs
-    docker-compose logs
+    docker-compose logs --tail 100
     cd ..
   done
 EOF
