@@ -49,4 +49,6 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
     docker-compose logs --tail 100
     cd ..
   done
+  echo remove orphan docker images
+  docker rmi \$(docker images -q)
 EOF
