@@ -12,6 +12,13 @@ echo run command
 echo run command
 ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   hostname
+  # define functions
+  start_docker() {
+    echo start docker
+  }
+  stop_docker() {
+    echo stop docker
+  }
   echo pull secrets repository
   cd xmm-infra-secrets-dev
   git pull
@@ -51,6 +58,7 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   done
   echo remove orphan docker images
   # get list images of running dockers
+  docker ps
   RUNNING_IMAGES=\$(docker ps | grep -v ID | awk '{printf("%s\\\|",\$2)}' | awk '{ print substr( \$0, 1, length(\$0)-2 ) }')
   echo Excluded images $RUNNING_IMAGES
   docker rmi \$(docker images -q | grep -v $RUNNING_IMAGES)
