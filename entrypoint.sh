@@ -50,5 +50,7 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
     cd ..
   done
   echo remove orphan docker images
-  docker rmi \$(docker images -q)
+  # get list images of running dockers
+  RUNNING_IMAGES=\$(docker ps | grep -v ID | awk '{printf("%s\\|",\$2)}' | awk '{ print substr( \$0, 1, length(\$0)-2 ) }')
+  docker rmi \$(docker images -q | grep -v $RUNNING_IMAGES)
 EOF
