@@ -16,6 +16,7 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   start_docker() {
     if [ -d ../../../xmm-infra-secrets-dev/\$1 ];then
       echo found secrets folder
+      pwd
       ls -la ../../../xmm-infra-secrets-dev/\$1
     fi
     if [ -f ../../../xmm-infra-secrets-dev/\$1/.env ];then
