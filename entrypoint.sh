@@ -14,10 +14,29 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   hostname
   # define functions
   start_docker() {
-    echo start docker
+    if [ -d ../../../xmm-infra-secrets-dev/\$1 ];then
+      echo found secrets folder
+      ls -la ../../../xmm-infra-secrets-dev/\$1
+    fi
+    if [ -f ../../../xmm-infra-secrets-dev/\$1/.env ];then
+      echo found .env file
+      if [ -f .env ];then
+        echo file or symlink exist
+      else
+        echo create symlink
+        ln -s ../../../xmm-infra-secrets-dev/\$1/.env ./.env
+      fi
+    fi
+    echo run service
+    docker-compose up -d
+    echo sleep for 2 seconds
+    sleep 2
+    echo print last logs
+    docker-compose logs --tail 100
   }
   stop_docker() {
-    echo stop docker
+    echo stop service
+    docker-compose down
   }
   echo pull secrets repository
   cd xmm-infra-secrets-dev
@@ -35,30 +54,20 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
     cd \$DIR_NAME
     pwd
     ls -la
-    if [ -d ../../../xmm-infra-secrets-dev/\$DIR_NAME ];then
-      echo found secrets folder
-      ls -la ../../../xmm-infra-secrets-dev/\$DIR_NAME
+    if [ "$ACTION" = "START" ];then
+      start_docker($DIR_NAME);
     fi
-    if [ -f ../../../xmm-infra-secrets-dev/\$DIR_NAME/.env ];then
-      echo found .env file
-      if [ -f .env ];then
-        echo file or symlink exist
-      else
-        echo create symlink
-        ln -s ../../../xmm-infra-secrets-dev/\$DIR_NAME/.env ./.env
-      fi
+    if [ "$ACTION" = "STOP" ];then
+      stop_docker();
     fi
-    echo run service
-    docker-compose up -d
-    echo sleep for 2 seconds
-    sleep 2
-    echo print last logs
-    docker-compose logs --tail 100
     cd ..
   done
   echo remove orphan docker images
   # get list images of running dockers
+  echo docker ps
   docker ps
+  echo docker ps a
+  docker ps -a 
   RUNNING_IMAGES=\$(docker ps | grep -v ID | awk '{printf("%s\\\|",\$2)}' | awk '{ print substr( \$0, 1, length(\$0)-2 ) }')
   echo Excluded images $RUNNING_IMAGES
   docker rmi \$(docker images -q | grep -v $RUNNING_IMAGES)
