@@ -55,10 +55,10 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
     pwd
     ls -la
     if [ "$ACTION" = "START" ];then
-      start_docker($DIR_NAME);
+      start_docker $DIR_NAME;
     fi
     if [ "$ACTION" = "STOP" ];then
-      stop_docker();
+      stop_docker;
     fi
     cd ..
   done
