@@ -16,17 +16,7 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   start_docker() {
     if [ -d ../../../xmm-infra-secrets-dev/\$1 ];then
       echo found secrets folder
-      pwd
-      ls -la ../../../xmm-infra-secrets-dev/\$1
-    fi
-    if [ -f ../../../xmm-infra-secrets-dev/\$1/.env ];then
-      echo found .env file
-      if [ -f .env ];then
-        echo file or symlink exist
-      else
-        echo create symlink
-        ln -s ../../../xmm-infra-secrets-dev/\$1/.env ./.env
-      fi
+      ls -la ../../../xmm-infra-secrets-dev/\$1/secrets.json
     fi
     echo run service
     docker-compose up -d
@@ -54,6 +44,15 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
     echo   - = [ \$DIR_NAME ] = -
     cd \$DIR_NAME
     pwd
+    if [ -f ../../../xmm-infra-secrets-dev/\$1/.env ];then
+      echo found .env file
+      if [ -f .env ];then
+        echo file or symlink exist
+      else
+        echo create symlink
+        ln -s ../../../xmm-infra-secrets-dev/\$1/.env ./.env
+      fi
+    fi
     ls -la
     if [ "$ACTION" = "START" ];then
       start_docker $DIR_NAME;
