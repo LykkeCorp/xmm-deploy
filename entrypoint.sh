@@ -62,7 +62,7 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
         stop_docker;
       fi
     else
-      echo \$DIR_NAME doesn't exist
+      echo \$DIR_NAME doesn\'t exist
     fi
     cd ..
   done
