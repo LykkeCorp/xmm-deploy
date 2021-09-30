@@ -42,23 +42,27 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
     DIR_NAME=\$(echo \$dc | awk -F/ '{print \$2}')
     echo
     echo   - = [ \$DIR_NAME ] = -
-    cd \$DIR_NAME
-    pwd
-    if [ -f ../../../xmm-infra-secrets-dev/\$1/.env ];then
-      echo found .env file
-      if [ -f .env ];then
-        echo file or symlink exist
-      else
-        echo create symlink
-        ln -s ../../../xmm-infra-secrets-dev/\$1/.env ./.env
+    if [ -d \$DIR_NAME ];then
+      cd \$DIR_NAME
+      pwd
+      if [ -f ../../../xmm-infra-secrets-dev/\$1/.env ];then
+        echo found .env file
+        if [ -f .env ];then
+          echo file or symlink exist
+        else
+          echo create symlink
+          ln -s ../../../xmm-infra-secrets-dev/\$1/.env ./.env
+        fi
       fi
-    fi
-    ls -la
-    if [ "$ACTION" = "START" ];then
-      start_docker $DIR_NAME;
-    fi
-    if [ "$ACTION" = "STOP" ];then
-      stop_docker;
+      ls -la
+      if [ "$ACTION" = "START" ];then
+        start_docker $DIR_NAME;
+      fi
+      if [ "$ACTION" = "STOP" ];then
+        stop_docker;
+      fi
+    else
+      echo \$DIR_NAME doesn't exist
     fi
     cd ..
   done
