@@ -8,8 +8,9 @@ echo $SSH_PRIVATE_KEY | base64 -d > /id_rsa
 chmod 400 /id_rsa
 echo create ssh know host file
 echo $SSH_KNOW_HOST > /known_hosts
+cat /known_hosts
 echo run command
-echo run command
+echo DOCKER_VM_HOST=$DOCKER_VM_HOST
 ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   hostname
   # define functions
