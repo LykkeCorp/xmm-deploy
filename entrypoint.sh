@@ -29,6 +29,7 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   }
   stop_docker() {
     echo stop service
+    docker-compose pull
     docker-compose down
   }
   echo pull secrets repository
