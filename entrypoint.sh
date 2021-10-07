@@ -40,10 +40,13 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   git pull
   cd $REPOSITORY_VM_DIR
   if [ \$REPOSITORY_SERVICE_DIR ];then
+    echo REPOSITORY_SERVICE_DIR defined - \$REPOSITORY_SERVICE_DIR
     DCD=\$REPOSITORY_SERVICE_DIR
   else
+    echo searching for docker-compose.yaml files
     DCD=\$(find . -name docker-compose.yaml | awk -F/ '{print \$2}')
   fi
+  echo list of dirs \$DCD
   for DIR_NAME in \$DCD
   do
     echo
