@@ -39,10 +39,13 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   cd ../xmm-infra-dev
   git pull
   cd $REPOSITORY_VM_DIR
-  DC=\$(find . -name docker-compose.yaml)
-  for dc in \$DC
+  if [ \$REPOSITORY_SERVICE_DIR ];then
+    DCD=\$REPOSITORY_SERVICE_DIR
+  else
+    DCD=\$(find . -name docker-compose.yaml | awk -F/ '{print \$2}')
+  fi
+  for DIR_NAME in \$DCD
   do
-    DIR_NAME=\$(echo \$dc | awk -F/ '{print \$2}')
     echo
     echo   - = [ \$DIR_NAME ] = -
     if [ -d \$DIR_NAME ];then
