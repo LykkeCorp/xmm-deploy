@@ -21,6 +21,7 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
       ls -la ../../../xmm-infra-secrets-dev/\$DIR_NAME/secrets.json
     fi
     echo run service
+    docker-compose pull
     docker-compose up -d
     echo sleep for 2 seconds
     sleep 2
@@ -29,7 +30,6 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   }
   stop_docker() {
     echo stop service
-    docker-compose pull
     docker-compose down
   }
   echo pull secrets repository
@@ -44,7 +44,7 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
     DCD=$REPOSITORY_SERVICE_DIR
   else
     echo searching for docker-compose.yaml files
-    #DCD=\$(find . -name docker-compose.yaml | awk -F/ '{print \$2}')
+    DCD=\$(find . -name docker-compose.yaml | awk -F/ '{print \$2}')
   fi
   echo list of dirs \$DCD
   for DIR_NAME in \$DCD
