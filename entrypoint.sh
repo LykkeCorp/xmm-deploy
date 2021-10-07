@@ -39,7 +39,7 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   cd ../xmm-infra-dev
   git pull
   cd $REPOSITORY_VM_DIR
-  if [ -z $REPOSITORY_SERVICE_DIR ];then
+  if [ -z \$REPOSITORY_SERVICE_DIR ];then
     echo REPOSITORY_SERVICE_DIR defined - $REPOSITORY_SERVICE_DIR
     DCD=$REPOSITORY_SERVICE_DIR
   else
