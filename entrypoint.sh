@@ -39,13 +39,9 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   cd ../xmm-infra-dev
   git pull
   cd $REPOSITORY_VM_DIR
-  echo 1
-  echo $REPOSITORY_SERVICE_DIR
-  echo 2
-  echo \$REPOSITORY_SERVICE_DIR
-  if [ -z \$REPOSITORY_SERVICE_DIR ];then
-    echo REPOSITORY_SERVICE_DIR defined - \$REPOSITORY_SERVICE_DIR
-    DCD=\$REPOSITORY_SERVICE_DIR
+  if [ -z $REPOSITORY_SERVICE_DIR ];then
+    echo REPOSITORY_SERVICE_DIR defined - $REPOSITORY_SERVICE_DIR
+    DCD=$REPOSITORY_SERVICE_DIR
   else
     echo searching for docker-compose.yaml files
     #DCD=\$(find . -name docker-compose.yaml | awk -F/ '{print \$2}')
