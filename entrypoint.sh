@@ -4,14 +4,14 @@
 set -e
 
 echo create ssh key
-echo $SSH_PRIVATE_KEY | base64 -d > /id_rsa
-chmod 400 /id_rsa
+echo $SSH_PRIVATE_KEY | base64 -d > /tmp/id_rsa
+chmod 400 /tmp/id_rsa
 echo create ssh know host file
-echo $SSH_KNOW_HOST > /known_hosts
-cat /known_hosts
+echo $SSH_KNOW_HOST > /tmp/known_hosts
+cat /tmp/known_hosts
 echo run command
 echo DOCKER_VM_HOST=$DOCKER_VM_HOST
-ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
+ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
   hostname
   # define functions
   start_docker() {
@@ -78,3 +78,5 @@ ssh -i /id_rsa -o UserKnownHostsFile=/known_hosts $DOCKER_VM_HOST << EOF
   echo remove orphan docker images
   docker image prune -af
 EOF
+# remove private key
+rm /tmp/id_rsa
