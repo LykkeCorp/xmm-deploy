@@ -19,6 +19,7 @@ jobs:
     - name: ssh deploy
       uses: swisschain/xmm-deploy@master
       env:
+        ENVIRONMENT: '-dev'
         DOCKER_VM_HOST: 'root@<IP>'
         REPOSITORY_VM_DIR: 'vm1'
         REPOSITORY_SERVICE_DIR: 'XMM-B2C2-Fix'
