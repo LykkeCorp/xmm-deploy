@@ -38,8 +38,9 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
   echo pull main repository
   cd ../xmm-infra$ENVIRONMENT
   git pull
+  echo go to $REPOSITORY_VM_DIR directory
   cd $REPOSITORY_VM_DIR
-  if [ -z \$REPOSITORY_SERVICE_DIR ];then
+  if [ -n \$REPOSITORY_SERVICE_DIR ];then
     echo REPOSITORY_SERVICE_DIR defined - $REPOSITORY_SERVICE_DIR
     DCD=$REPOSITORY_SERVICE_DIR
   else
