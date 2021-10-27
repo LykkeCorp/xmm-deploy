@@ -15,11 +15,6 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
   hostname
   # define functions
   start_docker() {
-    DIR_NAME=$1
-    if [ -d ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME ];then
-      echo found secrets folder
-      ls -la ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME
-    fi
     echo run service
     docker-compose pull
     docker-compose up -d
@@ -62,9 +57,17 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
           ln -s ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/.env ./.env
         fi
       fi
+      if [ -f ../../../$REPOSITORY_PATH_SECRETS/secrets.json ];then
+        echo found common secrets file
+        ls -la ../../../$REPOSITORY_PATH_SECRETS/secrets.json
+      fi
+      if [ -f ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/secrets.json ];then
+        echo found service secrets file
+        ls -la ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/secrets.json
+      fi
       ls -la
       if [ "$ACTION" = "START" ];then
-        start_docker $DIR_NAME;
+        start_docker;
       fi
       if [ "$ACTION" = "STOP" ];then
         stop_docker;
