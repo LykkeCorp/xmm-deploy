@@ -16,9 +16,9 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
   # define functions
   start_docker() {
     DIR_NAME=$1
-    if [ -d ../../../xmm-infra-secrets$ENVIRONMENT/\$DIR_NAME ];then
+    if [ -d ../../../$REPOSITORY_PATH_SECRETS/$DIR_NAME ];then
       echo found secrets folder
-      ls -la ../../../xmm-infra-secrets$ENVIRONMENT/\$DIR_NAME/secrets.json
+      ls -la ../../../$REPOSITORY_PATH_SECRETS/$DIR_NAME/secrets.json
     fi
     echo run service
     docker-compose pull
@@ -33,13 +33,11 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
     docker-compose down
   }
   echo pull secrets repository
-  cd xmm-infra-secrets$ENVIRONMENT
+  cd $REPOSITORY_PATH_SECRETS/
   git pull
   echo pull main repository
-  cd ../xmm-infra$ENVIRONMENT
+  cd ../$REPOSITORY_PATH_INFRASTRUCTURE
   git pull
-  echo go to $REPOSITORY_VM_DIR directory
-  cd $REPOSITORY_VM_DIR
   if [ -n "\$REPOSITORY_SERVICE_DIR" ];then
     echo REPOSITORY_SERVICE_DIR defined - $REPOSITORY_SERVICE_DIR
     DCD=$REPOSITORY_SERVICE_DIR
@@ -55,13 +53,13 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
     if [ -d \$DIR_NAME ];then
       cd \$DIR_NAME
       pwd
-      if [ -f ../../../xmm-infra-secrets$ENVIRONMENT/\$DIR_NAME/.env ];then
+      if [ -f ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/.env ];then
         echo found .env file
         if [ -f .env ];then
           echo file or symlink exist
         else
           echo create symlink
-          ln -s ../../../xmm-infra-secrets$ENVIRONMENT/\$DIR_NAME/.env ./.env
+          ln -s ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/.env ./.env
         fi
       fi
       ls -la
