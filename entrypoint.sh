@@ -16,9 +16,9 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
   # define functions
   start_docker() {
     DIR_NAME=$1
-    if [ -d ../../../$REPOSITORY_PATH_SECRETS/$DIR_NAME ];then
+    if [ -d ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME ];then
       echo found secrets folder
-      ls -la ../../../$REPOSITORY_PATH_SECRETS/$DIR_NAME/secrets.json
+      ls -la ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME
     fi
     echo run service
     docker-compose pull
