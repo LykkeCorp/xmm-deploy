@@ -45,6 +45,7 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
   echo pull main repository
   cd ../$REPOSITORY_PATH_INFRASTRUCTURE
   git pull
+  # if "$REPOSITORY_SERVICE_DIR" found then we apply to one component, otherwise to all components
   if [ -n "$REPOSITORY_SERVICE_DIR" ];then
     echo REPOSITORY_SERVICE_DIR defined - $REPOSITORY_SERVICE_DIR
     DCD=$REPOSITORY_SERVICE_DIR
@@ -60,6 +61,7 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
     if [ -d \$DIR_NAME ];then
       cd \$DIR_NAME
       pwd
+      # create a symlink for infra components to .env file (instead of coping it)
       if [ -f ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/.env ];then
         echo found .env file
         if [ -f .env ];then
@@ -69,6 +71,7 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
           ln -s ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/.env ./.env
         fi
       fi
+      # show if we found 'secrets.json'
       if [ -f ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/secrets.json ];then
         echo found service secrets file
         ls -la ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/secrets.json
