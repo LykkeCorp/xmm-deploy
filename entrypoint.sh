@@ -30,6 +30,10 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
   echo pull secrets repository
   cd $REPOSITORY_PATH_SECRETS/
   git pull
+  if [ -f ./secrets.json ];then
+    echo found common secrets file
+    ls -la ./secrets.json
+  fi
   echo pull main repository
   cd ../$REPOSITORY_PATH_INFRASTRUCTURE
   git pull
@@ -56,10 +60,6 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
           echo create symlink
           ln -s ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/.env ./.env
         fi
-      fi
-      if [ -f ../../../$REPOSITORY_PATH_SECRETS/secrets.json ];then
-        echo found common secrets file
-        ls -la ../../../$REPOSITORY_PATH_SECRETS/secrets.json
       fi
       if [ -f ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/secrets.json ];then
         echo found service secrets file
