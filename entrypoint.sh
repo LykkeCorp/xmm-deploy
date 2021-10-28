@@ -37,7 +37,7 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
   echo pull main repository
   cd ../$REPOSITORY_PATH_INFRASTRUCTURE
   git pull
-  if [ -n "\$REPOSITORY_SERVICE_DIR" ];then
+  if [ -n "$REPOSITORY_SERVICE_DIR" ];then
     echo REPOSITORY_SERVICE_DIR defined - $REPOSITORY_SERVICE_DIR
     DCD=$REPOSITORY_SERVICE_DIR
   else
