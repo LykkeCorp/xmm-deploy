@@ -25,7 +25,15 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
   }
   stop_docker() {
     echo stop service
+    docker-compose stop
+  }
+  down_docker() {
+    echo delete service
     docker-compose down
+  }
+  restart_docker() {
+    echo restart service
+    docker-compose restart
   }
   echo pull secrets repository
   cd $REPOSITORY_PATH_SECRETS/
@@ -71,6 +79,12 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
       fi
       if [ "$ACTION" = "STOP" ];then
         stop_docker;
+      fi
+      if [ "$ACTION" = "DOWN" ];then
+        down_docker;
+      fi
+      if [ "$ACTION" = "RESTART" ];then
+        restart_docker;
       fi
     else
       echo \$DIR_NAME doesn\'t exist
