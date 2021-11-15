@@ -18,10 +18,10 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
     echo run service
     docker-compose pull
     docker-compose up -d
-    echo sleep for 2 seconds
-    sleep 2
-    echo print last logs
-    docker-compose logs --tail 100
+    # echo sleep for 2 seconds
+    # sleep 2
+    # echo print last logs
+    # docker-compose logs --tail 100
   }
   stop_docker() {
     echo stop service
