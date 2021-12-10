@@ -1,4 +1,4 @@
-FROM swisschains/docker-compose-docker:1.0.1
+FROM lkkxmm/docker-compose-docker:latest
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
