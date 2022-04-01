@@ -48,7 +48,7 @@ ssh -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts $DOCKER_VM_HOST << EOF
   # if "$REPOSITORY_SERVICE_DIR" found then we apply to one component, otherwise to all components
   if [ -n "$REPOSITORY_SERVICE_DIR" ];then
     echo REPOSITORY_SERVICE_DIR defined - $REPOSITORY_SERVICE_DIR
-    DCD=$REPOSITORY_SERVICE_DIR
+    DCD="$REPOSITORY_SERVICE_DIR"
   else
     echo searching for docker-compose.yaml files
     DCD=\$(find . -name docker-compose.yaml | awk -F/ '{print \$2}')
